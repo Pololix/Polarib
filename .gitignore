@@ -37,5 +37,10 @@
 *.out
 *.app
 
-# debug information files
+# Debug information files
 *.dwo
+
+# Folders
+.vs/
+out/ 
+test/
