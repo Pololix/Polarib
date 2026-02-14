@@ -1,6 +1,4 @@
-Polaris Engine is a (or is going to be) a lightweight and simple engine.
-It'll be focused on graphics, performance and, mainly, learning my way around computers. I'm planning on creating several games on it.
+#Pololib
+Pololib is a lightwight rendering library focused on simplicity, portability and performance. Inspired by Raylib, this library is still focused on learning graphics programming but also on real application production.
 
-Engine workflow:
-
-Engine optimizations:
+#Features:
