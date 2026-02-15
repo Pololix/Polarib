@@ -42,5 +42,4 @@
 
 # Folders
 .vs/
-out/ 
-test/
+out/

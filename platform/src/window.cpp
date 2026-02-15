@@ -8,10 +8,6 @@
 
 namespace platform 
 {
-Window::Window(int width, int height, const char* name)
-{
-	Window(width, height, name, false);
-}
 Window::Window(int width, int height, const char* name, bool fullscreen) 
 {
 	dbg_utils::Logger& platformLogger = dbg_utils::getLogger("platform");

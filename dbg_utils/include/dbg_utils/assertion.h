@@ -1,19 +1,18 @@
 #pragma once
 
+#include <cstdlib>
 #include <iostream>
 
-// TODO: redo assertion system
-
-#ifdef _DEBUG
+#ifdef VERSION_DEBUG
 	#define DEBUG_ASSERT(cond, msg)\
-		do {\
-			if(!(cond))\
+		do\
+		{\
+			if (!(cond)) \
 			{\
-				std::cout << __func__ << " failed at " << __FILE__ << " line " << __LINE__ << '\n';\
-				std::cout << "Log: " << msg << '\n';\
+				std::cout << msg << '\n';\
 				std::abort();\
 			}\
-		} while(0);\
+		} while(0)
 #else
-	#define DEBUG_ASSERT(cond, msg) (void(0))
+	#define DEBUG_ASSERT(cond, msg) ((void)0)
 #endif
