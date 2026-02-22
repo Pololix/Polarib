@@ -15,7 +15,7 @@ target_compile_definitions(config
 
 # submodules
 add_subdirectory(core)
-add_subdirectory(dependencies)
+add_subdirectory(deps)
 add_subdirectory(platform)
 
 # .lib
