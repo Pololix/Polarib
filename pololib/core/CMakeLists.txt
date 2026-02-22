@@ -1,7 +1,7 @@
 # core submodule
 add_library(core STATIC
 	src/application.cpp
- "include/core/event.h" "include/core/event_dispatcher.h")
+)
 
 target_include_directories(core
 	PUBLIC
@@ -13,5 +13,6 @@ target_link_libraries(core
 		glad
 		glfw
 		config
-		platform
+		platform	
+		dbg
 )

@@ -1,18 +1,20 @@
 #include "core/application.h"
 
-#include <iostream> //TODO: remove io from app -> logging
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "platform/window.h"
+#include "dbg/logger.h"
 
 namespace plb
 {
 	Application::Application(AppSpecs specs)
 	{
+		Logger& coreLogger = getLogger("core");
+
 		if (!glfwInit())
 		{	
-			std::cout << "Unable to init GLFW\n";
+			coreLogger.log(LogLevel::Error, []() { return "Unable to init GLFW"; });
 			return;
 		}
 
@@ -29,14 +31,14 @@ namespace plb
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			std::cout << "Unable to init GLAD\n";
+			coreLogger.log(LogLevel::Error, []() { return "Unable to init GLAD"; });
 			return;
 		}
 
 		// FOR NOW
 		glViewport(0, 0, specs.windowSpecs.width, specs.windowSpecs.height); // TODO: allow to resize windows
 
-		std::cout << "App init correctly\n";
+		coreLogger.log(LogLevel::Info, []() { return "App init correctly"; });
 	}
 
 	Application::~Application()

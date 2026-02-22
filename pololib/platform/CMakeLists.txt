@@ -13,4 +13,5 @@ target_link_libraries(platform
 		glad
 		glfw
 		config
+		dbg
 )

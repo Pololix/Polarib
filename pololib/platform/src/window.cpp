@@ -1,17 +1,18 @@
 #include "platform/window.h"
 
 #include <GLFW/glfw3.h>
-
-#include <iostream> // TODO: remove io from window -> logger
+#include "dbg/logger.h"
 
 namespace plb
 {
 	Window::Window(WindowSpecs specs)
 	{
+		Logger& platformLogger = getLogger("platform");
+
 		m_window = glfwCreateWindow(specs.width, specs.height, specs.name, specs.fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 		if (!m_window)
 		{
-			std::cout << "Unable to create GLFW window\n";
+			platformLogger.log(LogLevel::Error, []() { return "Unable to create GLFW window"; });
 			return;
 		}
 	}

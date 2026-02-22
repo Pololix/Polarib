@@ -15,6 +15,7 @@ target_compile_definitions(config
 
 # submodules
 add_subdirectory(core)
+add_subdirectory(dbg)
 add_subdirectory(deps)
 add_subdirectory(platform)
 
