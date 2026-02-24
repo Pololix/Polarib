@@ -24,6 +24,6 @@ namespace plb
 		void pollEvents() const;
 		bool shouldClose() const;
 	private:
-		GLFWwindow* m_window = nullptr;
+		GLFWwindow* m_Window = nullptr;
 	};
 }

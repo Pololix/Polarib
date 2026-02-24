@@ -10,7 +10,7 @@
 				std::cout << msg << '\n';\
 				std::abort();\
 			}\
-		} while (0)\
+		} while (0)
 #else
 	#define DEBUG_ASSERT(cond, msg) (void)0
 #endif
@@ -22,4 +22,4 @@
 				std::cout << msg << '\n';\
 				std::abort();\
 			}\
-		} while (0)\
+		} while (0)

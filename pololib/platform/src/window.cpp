@@ -9,8 +9,8 @@ namespace plb
 	{
 		Logger& platformLogger = getLogger("platform");
 
-		m_window = glfwCreateWindow(specs.width, specs.height, specs.name, specs.fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
-		if (!m_window)
+		m_Window = glfwCreateWindow(specs.width, specs.height, specs.name, specs.fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
+		if (!m_Window)
 		{
 			platformLogger.log(LogLevel::Error, []() { return "Unable to create GLFW window"; });
 			return;
@@ -19,17 +19,17 @@ namespace plb
 
 	Window::~Window()
 	{
-		glfwDestroyWindow(m_window);
+		glfwDestroyWindow(m_Window);
 	}
 
 	void Window::makeContextCurrent() const
 	{
-		glfwMakeContextCurrent(m_window);
+		glfwMakeContextCurrent(m_Window);
 	}
 
 	void Window::swapBuffers() const
 	{
-		glfwSwapBuffers(m_window);
+		glfwSwapBuffers(m_Window);
 	}
 
 	void Window::pollEvents() const
@@ -39,6 +39,6 @@ namespace plb
 
 	bool Window::shouldClose() const
 	{
-		return glfwWindowShouldClose(m_window);
+		return glfwWindowShouldClose(m_Window);
 	}
 }

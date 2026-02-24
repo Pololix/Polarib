@@ -3,18 +3,17 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "platform/window.h"
 #include "dbg/logger.h"
 
 namespace plb
 {
 	Application::Application(AppSpecs specs)
 	{
-		Logger& coreLogger = getLogger("core");
+		Logger& logger = getLogger("core");
 
 		if (!glfwInit())
 		{	
-			coreLogger.log(LogLevel::Error, []() { return "Unable to init GLFW"; });
+			logger.log(LogLevel::Error, []() { return "Unable to init GLFW"; });
 			return;
 		}
 
@@ -26,19 +25,18 @@ namespace plb
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		m_window = std::make_unique<Window>(specs.windowSpecs);
-		m_window.get()->makeContextCurrent();
+		m_Window = std::make_unique<Window>(specs.windowSpecs);
+		m_Window.get()->makeContextCurrent();
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			coreLogger.log(LogLevel::Error, []() { return "Unable to init GLAD"; });
+			logger.log(LogLevel::Error, []() { return "Unable to init GLAD"; });
 			return;
 		}
 
-		// FOR NOW
 		glViewport(0, 0, specs.windowSpecs.width, specs.windowSpecs.height); // TODO: allow to resize windows
 
-		coreLogger.log(LogLevel::Info, []() { return "App init correctly"; });
+		logger.log(LogLevel::Info, []() { return "App init correctly"; });
 	}
 
 	Application::~Application()
@@ -48,18 +46,38 @@ namespace plb
 
 	void Application::run()
 	{
-		/*float currentTime;
+		float currentTime;
 		float pastTime = 0.0f;
-		float deltaTime = 0.0f;*/
+		float deltaTime;
 
-		do
+		while (!m_Window.get()->shouldClose());
 		{
-			/*currentTime = glfwGetTime();
+			currentTime = glfwGetTime();
 			deltaTime = currentTime - pastTime;
-			pastTime = currentTime;*/
+			pastTime = currentTime;
 
-			m_window.get()->swapBuffers();
-			m_window.get()->pollEvents();
-		} while (!m_window.get()->shouldClose());
+			// process input (Window)
+			m_LayerStack.flushEventBuffer();
+
+			m_LayerStack.update(deltaTime);
+			//m_CommandSystem.commit();
+
+			m_LayerStack.render();
+			//m_CommandSystem.commit();
+
+			//m_CommandSystem.swapBuffers();
+			m_Window.get()->swapBuffers();
+			m_Window.get()->pollEvents();
+		}
+	}
+
+	LayerID Application::addLayer(std::unique_ptr<Layer> layer)
+	{
+		return m_LayerStack.attachUnderlay(std::move(layer));
+	}
+
+	LayerID Application::addOverlay(std::unique_ptr<Layer> layer)
+	{
+		return m_LayerStack.attachOverlay(std::move(layer));
 	}
 }

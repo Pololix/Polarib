@@ -1,6 +1,6 @@
 #pragma once
 
-#include <memory>
+#include "core/events/layer_stack.h"
 #include "platform/window.h"
 
 namespace plb
@@ -17,8 +17,10 @@ namespace plb
 		~Application();
 
 		void run();
+		LayerID addLayer(std::unique_ptr<Layer> layer);
+		LayerID addOverlay(std::unique_ptr<Layer> layer);
 	private:
-		// FOR NOW: single window apps support
-		std::unique_ptr<Window> m_window;
+		std::unique_ptr<Window> m_Window;
+		LayerStack m_LayerStack;
 	};
 }

@@ -24,5 +24,6 @@ add_library(pololib INTERFACE)
 target_link_libraries(pololib
 	INTERFACE
 		core
+		dbg
 		platform
 )
