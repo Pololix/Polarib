@@ -3,7 +3,6 @@
 #include <vector>
 #include <memory>
 #include "core/events/layer.h"
-#include "core/events/event_system.h"
 
 namespace plb
 {
@@ -30,11 +29,12 @@ namespace plb
 		void suspendLayer(LayerID ID);
 		void includeLayer(LayerID ID);
 
+		void pushEvent(std::unique_ptr<Event> event);
 		void flushEventBuffer();
 		void update(float deltaTime);
 		void render();
 	private:
-		EventSystem m_EventSystem;
+		std::vector<std::unique_ptr<Event>> m_EventBuffer;
 		std::vector<LayerWrapper> m_LayerBuffer;
 		unsigned int m_OverlayIndex = 0;
 		LayerID m_FreeID = 0;

@@ -55,16 +55,21 @@ namespace plb
 		layer->onInclude();
 	}
 
+	void LayerStack::pushEvent(std::unique_ptr<Event> event)
+	{
+		m_EventBuffer.push_back(std::move(event));
+	}
+
 	void LayerStack::flushEventBuffer()
 	{
-		for (auto& event : m_EventSystem.getBuffer())
+		for (auto& event : m_EventBuffer)
 		{
 			for (auto& wrapper : m_LayerBuffer)
 			{
-				if (wrapper.layer.get()->onEvent(*event.release())) break;
+				wrapper.layer.get()->onEvent(*event.get());
 			}
 		}
-		m_EventSystem.clearBuffer();
+		m_EventBuffer.clear();
 	}
 
 	void LayerStack::update(float deltaTime)

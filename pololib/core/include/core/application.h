@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/events/layer_stack.h"
+#include "core/commands/command_system.h"
 #include "platform/window.h"
 
 namespace plb
@@ -22,5 +23,6 @@ namespace plb
 	private:
 		std::unique_ptr<Window> m_Window;
 		LayerStack m_LayerStack;
+		CommandSystem m_CommandSystem;
 	};
 }

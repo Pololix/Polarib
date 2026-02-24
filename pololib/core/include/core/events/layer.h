@@ -4,17 +4,15 @@
 
 namespace plb
 {
-	class EventSystem;
 	class CommandSystem;
 
 	class Layer
 	{
 	public:
 		bool m_Suspended = false;
-		EventSystem* m_EventSystem = nullptr;
 		CommandSystem* m_CommandSystem = nullptr;
 
-		virtual void onAttach(EventSystem* eventSystem, CommandSystem* commandSystem);
+		virtual void onAttach(CommandSystem* commandSystem);
 		virtual void onSuspend() = 0;
 		virtual void onInclude() = 0;
 		virtual void onDetach();
