@@ -55,40 +55,32 @@ namespace plb
 		layer->onInclude();
 	}
 
-	void LayerStack::pushEvent(std::unique_ptr<Event> event)
+	void LayerStack::propagateEvent(Event& e)
 	{
-		m_EventBuffer.push_back(std::move(event));
-	}
-
-	void LayerStack::flushEventBuffer()
-	{
-		for (auto& event : m_EventBuffer)
+		for (auto wrapper = m_LayerBuffer.rbegin(); wrapper != m_LayerBuffer.rend(); wrapper++)
 		{
-			for (auto& wrapper : m_LayerBuffer)
-			{
-				wrapper.layer.get()->onEvent(*event.get());
-			}
-		}
-		m_EventBuffer.clear();
-	}
-
-	void LayerStack::update(float deltaTime)
-	{
-		for (auto& wrapper : m_LayerBuffer)
-		{
-			wrapper.layer.get()->onUpdate(deltaTime);
+			(*wrapper).layer.get()->onEvent(e));
+			if (e.m_Handled) break;
 		}
 	}
 
-	void LayerStack::render()
+	void LayerStack::propagateUpdate(float deltaTime) const
 	{
-		for (auto& wrapper : m_LayerBuffer)
+		for (auto wrapper = m_LayerBuffer.rbegin(); wrapper != m_LayerBuffer.rend(); wrapper++)
 		{
-			wrapper.layer.get()->onRender();
+			(*wrapper).layer.get()->onUpdate(deltaTime);
 		}
 	}
 
-	int LayerStack::getPos(LayerID ID)
+	void LayerStack::propagateRender() const
+	{
+		for (auto wrapper = m_LayerBuffer.begin(); wrapper != m_LayerBuffer.end(); wrapper++)
+		{
+			(*wrapper).layer.get()->onRender();
+		}
+	}
+
+	int LayerStack::getPos(LayerID ID) const
 	{
 		auto target = std::find_if(m_LayerBuffer.begin(), m_LayerBuffer.end(), [ID](LayerWrapper& wrapper) 
 		{ 

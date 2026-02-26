@@ -10,15 +10,14 @@ namespace plb
 	{
 	public:
 		bool m_Suspended = false;
-		CommandSystem* m_CommandSystem = nullptr;
 
-		virtual void onAttach(CommandSystem* commandSystem);
+		virtual void onAttach() = 0;
 		virtual void onSuspend() = 0;
 		virtual void onInclude() = 0;
-		virtual void onDetach();
+		virtual void onDetach() = 0;
 
 		virtual void onUpdate(float deltaTime) = 0;
 		virtual void onRender() = 0;
-		virtual bool onEvent(Event& event) = 0;
+		virtual void onEvent(Event& event) = 0;
 	};
 }

@@ -29,12 +29,10 @@ namespace plb
 		void suspendLayer(LayerID ID);
 		void includeLayer(LayerID ID);
 
-		void pushEvent(std::unique_ptr<Event> event);
-		void flushEventBuffer();
-		void update(float deltaTime);
-		void render();
+		void propagateEvent(Event& e) const;
+		void propagateUpdate(float deltaTime) const;
+		void propagateRender() const;
 	private:
-		std::vector<std::unique_ptr<Event>> m_EventBuffer;
 		std::vector<LayerWrapper> m_LayerBuffer;
 		unsigned int m_OverlayIndex = 0;
 		LayerID m_FreeID = 0;

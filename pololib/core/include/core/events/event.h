@@ -13,6 +13,8 @@ namespace plb
 	class Event
 	{
 	public:
+		bool m_Handled = false;
+
 		virtual EventType getType() = 0;
 	};
 }

@@ -5,21 +5,28 @@
 
 namespace plb
 {
-	Window::Window(WindowSpecs specs)
+	Window::~Window()
 	{
-		Logger& platformLogger = getLogger("platform");
+		glfwDestroyWindow(m_Window);
+	}
+
+	void Window::build(WindowSpecs specs)
+	{
+		Logger& logger = getLogger("platform");
 
 		m_Window = glfwCreateWindow(specs.width, specs.height, specs.name, specs.fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 		if (!m_Window)
 		{
-			platformLogger.log(LogLevel::Error, []() { return "Unable to create GLFW window"; });
+			logger.log(LogLevel::Error, []() { return "Unable to build GLFW window"; });
 			return;
 		}
+
+		// set call backs
 	}
 
-	Window::~Window()
+	void Window::setPushEventCallback(std::function<void(Event&& event)> pushEventCallback)
 	{
-		glfwDestroyWindow(m_Window);
+		m_PushEventCallback = pushEventCallback;
 	}
 
 	void Window::makeContextCurrent() const

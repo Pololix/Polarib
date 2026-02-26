@@ -25,8 +25,12 @@ namespace plb
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		m_Window = std::make_unique<Window>(specs.windowSpecs);
-		m_Window.get()->makeContextCurrent();
+		m_Window.setPushEventCallback([this](Event&& e)
+			{
+				m_EventSystem.push(std::move(e));
+			});
+		m_Window.build(specs.windowSpecs);
+		m_Window.makeContextCurrent();
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -34,7 +38,7 @@ namespace plb
 			return;
 		}
 
-		glViewport(0, 0, specs.windowSpecs.width, specs.windowSpecs.height); // TODO: allow to resize windows
+		glViewport(0, 0, specs.windowSpecs.width, specs.windowSpecs.height); // TODO: allow to resize windows -> WindowResizeEvent
 
 		logger.log(LogLevel::Info, []() { return "App init correctly"; });
 	}
@@ -50,24 +54,22 @@ namespace plb
 		float pastTime = 0.0f;
 		float deltaTime;
 
-		while (!m_Window.get()->shouldClose());
+		while (!m_Window.shouldClose());
 		{
 			currentTime = glfwGetTime();
 			deltaTime = currentTime - pastTime;
 			pastTime = currentTime;
 
-			// process input (Window)
-			m_LayerStack.flushEventBuffer();
+			m_EventSystem.flushEventBuffer(m_LayerStack);
 
-			m_LayerStack.update(deltaTime);
-			//m_CommandSystem.commit();
+			m_LayerStack.propagateUpdate(deltaTime);
+			//m_CommandSystem.commit(); //logic cmds
 
-			m_LayerStack.render();
-			//m_CommandSystem.commit();
+			m_LayerStack.propagateRender();
+			//m_CommandSystem.commit(); //render cmds
 
-			//m_CommandSystem.swapBuffers();
-			m_Window.get()->swapBuffers();
-			m_Window.get()->pollEvents();
+			m_Window.swapBuffers();
+			m_Window.pollEvents();
 		}
 	}
 

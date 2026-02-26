@@ -17,7 +17,6 @@ target_compile_definitions(config
 add_subdirectory(core)
 add_subdirectory(dbg)
 add_subdirectory(deps)
-add_subdirectory(platform)
 
 # .lib
 add_library(pololib INTERFACE)
