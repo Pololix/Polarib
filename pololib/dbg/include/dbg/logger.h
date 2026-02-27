@@ -17,7 +17,7 @@ namespace plb
 		Logger(LogLevel minLevel)
 			: m_MinLevel(minLevel) {}
 
-		void log(LogLevel level, std::function<std::string()> stringProducer)
+		void log(LogLevel level, std::function<std::string()> stringProducer) const
 		{
 			if (level < m_MinLevel) return;
 
@@ -34,16 +34,11 @@ namespace plb
 
 		if (loggerMap.find(name) == loggerMap.end())
 		{
-			Logger newLogger(LogLevel::Debug);
-			loggerMap.emplace(name, newLogger);
+			loggerMap.emplace(name, LogLevel::Debug);
 
 			dbgLogger.log(LogLevel::Debug, [&name]() { return "New logger: " + name; });
-
-			return newLogger;
 		}
-		else
-		{
-			return loggerMap.at(name);
-		}
+		
+		return loggerMap.at(name);
 	}
 }

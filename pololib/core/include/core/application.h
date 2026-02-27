@@ -1,8 +1,6 @@
 #pragma once
 
-#include "core/events/layer_stack.h"
-#include "core/events/event_system.h"
-#include "core/commands/command_system.h"
+#include "core/events.h"
 #include "core/window.h"
 
 namespace plb
@@ -25,7 +23,6 @@ namespace plb
 	private:
 		Window m_Window;
 		LayerStack m_LayerStack;
-		CommandSystem m_CommandSystem;
 		EventSystem m_EventSystem;
 	};
 }

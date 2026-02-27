@@ -1,10 +1,8 @@
 #pragma once
 
-#include "core/events/event.h"
-
 namespace plb
 {
-	class CommandSystem;
+	class Event;
 
 	class Layer
 	{

@@ -1,13 +1,12 @@
 #pragma once
 
 #include <functional>
+#include "core/events.h"
 
 struct GLFWwindow;
 
 namespace plb
 {
-	class Event;
-
 	struct WindowSpecs
 	{
 		unsigned int width = 0;
@@ -31,6 +30,11 @@ namespace plb
 		bool shouldClose() const;
 	private:
 		GLFWwindow* m_Window = nullptr;
+		int m_Width = 0;
+		int m_Height = 0;
+
 		std::function<void(Event&& event)> m_PushEventCallback;
+
+		static void framebufferCallback(GLFWwindow* window, int width, int height);
 	};
 }

@@ -1,10 +1,27 @@
 #pragma once
 
 #include <vector>
-#include "core/events/event.h"
 
 namespace plb
 {
+	class LayerStack;
+
+	enum class EventType
+	{
+		None = 0,
+		WindowResizeEvent, WindowCloseEvent,
+		KeyPressedEvent, KeyReleasedEvent,
+		MouseMovedEvent, MouseLeftClickedEvent, MouseRightClickedEvent
+	};
+
+	class Event
+	{
+	public:
+		bool m_Handled = false;
+
+		virtual EventType getType() = 0;
+	};
+
 	class EventSystem
 	{
 	public:
