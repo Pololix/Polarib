@@ -37,6 +37,6 @@ namespace plb
 		unsigned int m_OverlayIndex = 0;
 		LayerID m_FreeID = 0;
 
-		int getPos(LayerID ID);
+		int getPos(LayerID ID) const;
 	};
 }

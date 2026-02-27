@@ -1,12 +1,14 @@
 #pragma once
 
+#include <memory>
 #include <functional>
-#include "core/events.h"
 
 struct GLFWwindow;
 
 namespace plb
 {
+	class Event;
+
 	struct WindowSpecs
 	{
 		unsigned int width = 0;
@@ -21,7 +23,7 @@ namespace plb
 		Window() = default;
 		~Window();
 
-		void setPushEventCallback(std::function<void(Event&& event)> pushEventCallback);
+		void setPushEventCallback(std::function<void(std::unique_ptr<Event> e)> fn);
 		void build(WindowSpecs specs);
 
 		void makeContextCurrent() const;
@@ -33,8 +35,13 @@ namespace plb
 		int m_Width = 0;
 		int m_Height = 0;
 
-		std::function<void(Event&& event)> m_PushEventCallback;
+		std::function<void(std::unique_ptr<Event> e)> m_PushEventCallback;
 
 		static void framebufferCallback(GLFWwindow* window, int width, int height);
+		static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		static void cursorPosCallback(GLFWwindow* window, double xPos, double yPos);
+		static void cursorEnterCallback(GLFWwindow* window, int entered);
+		static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+		static void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 	};
 }

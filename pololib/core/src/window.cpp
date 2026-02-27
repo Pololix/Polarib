@@ -1,6 +1,7 @@
 #include "core/window.h"
 
 #include <GLFW/glfw3.h>
+#include "core/events/events.h"
 #include "dbg/logger.h"
 
 namespace plb
@@ -25,13 +26,17 @@ namespace plb
 
 		glfwSetWindowUserPointer(m_Window, this);
 
-		// set call backs
 		glfwSetFramebufferSizeCallback(m_Window, framebufferCallback);
+		glfwSetKeyCallback(m_Window, keyCallback);
+		glfwSetCursorPosCallback(m_Window, cursorPosCallback);
+		glfwSetCursorEnterCallback(m_Window, cursorEnterCallback);
+		glfwSetMouseButtonCallback(m_Window, mouseButtonCallback);
+		glfwSetScrollCallback(m_Window, scrollCallback);
 	}
 
-	void Window::setPushEventCallback(std::function<void(Event&& event)> pushEventCallback)
+	void Window::setPushEventCallback(std::function<void(std::unique_ptr<Event> e)> fn)
 	{
-		m_PushEventCallback = pushEventCallback;
+		m_PushEventCallback = fn;
 	}
 
 	void Window::makeContextCurrent() const
@@ -65,10 +70,103 @@ namespace plb
 			return;
 		}
 
-		m_Width = width;
-		m_Height = height;
+		win->m_Width = width;
+		win->m_Height = height;
 
 		WindowResizeEvent e;
-		m_PushEventCallback(std::move(e));
+		win->m_PushEventCallback(std::make_unique<WindowResizeEvent>(e));
+	}
+
+	void Window::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+
+		if (!win)
+		{
+			Logger& logger = getLogger("window");
+			logger.log(LogLevel::Error, []() { return "Unable to retrieve glfwWindowUserPointer"; });
+			return;
+		}
+
+		switch (action)
+		{
+			case GLFW_PRESS:
+			{
+				win->m_PushEventCallback(std::make_unique<KeyPressEvent>());
+				break;
+			}
+			case GLFW_RELEASE:
+			{
+				win->m_PushEventCallback(std::make_unique<KeyReleaseEvent>());
+				break;
+			}
+			case GLFW_REPEAT:
+			{
+				break;
+			}
+		}
+	}
+
+	void Window::cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
+	{
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+
+		if (!win)
+		{
+			Logger& logger = getLogger("window");
+			logger.log(LogLevel::Error, []() { return "Unable to retrieve glfwWindowUserPointer"; });
+			return;
+		}
+
+		win->m_PushEventCallback(std::make_unique<CursorMoveEvent>());
+	}
+
+	void Window::cursorEnterCallback(GLFWwindow* window, int entered)
+	{
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+
+		if (!win)
+		{
+			Logger& logger = getLogger("window");
+			logger.log(LogLevel::Error, []() { return "Unable to retrieve glfwWindowUserPointer"; });
+			return;
+		}
+
+		if (entered)
+		{
+			win->m_PushEventCallback(std::make_unique<CursorEnterEvent>());
+		}
+		else
+		{
+			win->m_PushEventCallback(std::make_unique<CursorExitEvent>());
+		}
+	}
+
+	void Window::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+	{
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+
+		if (!win)
+		{
+			Logger& logger = getLogger("window");
+			logger.log(LogLevel::Error, []() { return "Unable to retrieve glfwWindowUserPointer"; });
+			return;
+		}
+
+		win->m_PushEventCallback(std::make_unique<ClickEvent>());
+	}
+
+	void Window::scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
+	{
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+
+		if (!win)
+		{
+			Logger& logger = getLogger("window");
+			logger.log(LogLevel::Error, []() { return "Unable to retrieve glfwWindowUserPointer"; });
+			return;
+		}
+
+		win->m_PushEventCallback(std::make_unique<ScrollEvent>());
 	}
 }

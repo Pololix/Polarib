@@ -1,9 +1,9 @@
 #pragma once
 
+#include "core/events/base_event.h"
+
 namespace plb
 {
-	class Event;
-
 	class Layer
 	{
 	public:

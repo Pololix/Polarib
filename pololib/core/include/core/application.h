@@ -1,6 +1,7 @@
 #pragma once
 
-#include "core/events.h"
+#include "core/events/event_system.h"
+#include "core/events/layer_stack.h"
 #include "core/window.h"
 
 namespace plb

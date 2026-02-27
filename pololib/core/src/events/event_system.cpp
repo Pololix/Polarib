@@ -4,16 +4,16 @@
 
 namespace plb
 {
-	void EventSystem::push(Event&& e)
+	void EventSystem::push(std::unique_ptr<Event> e)
 	{
 		m_EventBuffer.push_back(std::move(e));
 	}
 
 	void EventSystem::flushEventBuffer(LayerStack& layerStack)
 	{
-		for (auto& e : m_EventBuffer)
+		for (auto& ptr : m_EventBuffer)
 		{
-			layerStack.propagateEvent(e);
+			layerStack.propagateEvent(*ptr.get());
 		}
 
 		m_EventBuffer.clear();

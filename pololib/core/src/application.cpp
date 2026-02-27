@@ -25,7 +25,7 @@ namespace plb
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		m_Window.setPushEventCallback([this](Event&& e)
+		m_Window.setPushEventCallback([this](std::unique_ptr<Event> e)
 			{
 				m_EventSystem.push(std::move(e));
 			});

@@ -1,26 +1,12 @@
 #pragma once
 
 #include <vector>
+#include <memory>
+#include "core/events/base_event.h"
 
 namespace plb
 {
 	class LayerStack;
-
-	enum class EventType
-	{
-		None = 0,
-		WindowResizeEvent, WindowCloseEvent,
-		KeyPressedEvent, KeyReleasedEvent,
-		MouseMovedEvent, MouseLeftClickedEvent, MouseRightClickedEvent
-	};
-
-	class Event
-	{
-	public:
-		bool m_Handled = false;
-
-		virtual EventType getType() = 0;
-	};
 
 	class EventSystem
 	{
@@ -28,9 +14,9 @@ namespace plb
 		EventSystem() = default;
 		~EventSystem() = default;
 
-		void push(Event&& e);
+		void push(std::unique_ptr<Event> e);
 		void flushEventBuffer(LayerStack& layerStack);
 	private:
-		std::vector<Event> m_EventBuffer;
+		std::vector<std::unique_ptr<Event>> m_EventBuffer;
 	};
 }

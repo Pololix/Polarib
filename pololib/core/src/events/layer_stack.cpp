@@ -1,6 +1,7 @@
 #include "core/events/layer_stack.h"
 
 #include <algorithm>
+#include "core/events/events.h"
 #include "dbg/assert.h"
 
 namespace plb
@@ -55,11 +56,11 @@ namespace plb
 		layer->onInclude();
 	}
 
-	void LayerStack::propagateEvent(Event& e)
+	void LayerStack::propagateEvent(Event& e) const
 	{
 		for (auto wrapper = m_LayerBuffer.rbegin(); wrapper != m_LayerBuffer.rend(); wrapper++)
 		{
-			(*wrapper).layer.get()->onEvent(e));
+			(*wrapper).layer.get()->onEvent(e);
 			if (e.m_Handled) break;
 		}
 	}
@@ -82,11 +83,11 @@ namespace plb
 
 	int LayerStack::getPos(LayerID ID) const
 	{
-		auto target = std::find_if(m_LayerBuffer.begin(), m_LayerBuffer.end(), [ID](LayerWrapper& wrapper) 
+		auto target = std::find_if(m_LayerBuffer.begin(), m_LayerBuffer.end(), [ID](const LayerWrapper& wrapper) 
 		{ 
 			return wrapper.ID == ID;
 		});
 
-		return (target == m_LayerBuffer.end()) ? -1 : std::distance(m_LayerBuffer.begin(), target);
+		return (target == m_LayerBuffer.end()) ? -1 : static_cast<int>(std::distance(m_LayerBuffer.begin(), target));
 	}
 }
