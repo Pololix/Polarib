@@ -1,6 +1,6 @@
 #pragma once
 
-#include <iostream> // TODO: defer logging and assertions avoid including io -> use sink and formatters
+#include <iostream> // PLB_TODO: defer logging and assertions avoid including io -> use sink and formatters
 
 #ifdef PLB_BUILD_DEBUG
 	#define DEBUG_ASSERT(cond, msg) do\

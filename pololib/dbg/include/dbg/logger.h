@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include <functional>
-#include <iostream> // TODO: remove iostream from logger and assert
+#include <iostream> // PLB_TODO: remove iostream from logger and assert
 
 namespace plb
 {

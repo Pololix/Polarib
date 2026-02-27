@@ -38,8 +38,6 @@ namespace plb
 			return;
 		}
 
-		glViewport(0, 0, specs.windowSpecs.width, specs.windowSpecs.height); // TODO: allow to resize windows -> WindowResizeEvent
-
 		logger.log(LogLevel::Info, []() { return "App init correctly"; });
 	}
 
