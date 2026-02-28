@@ -26,7 +26,6 @@ namespace plb
 		void setPushEventCallback(std::function<void(std::unique_ptr<Event> e)> fn);
 		void build(WindowSpecs specs);
 
-		void makeContextCurrent() const;
 		void swapBuffers() const;
 		void pollEvents() const;
 		bool shouldClose() const;

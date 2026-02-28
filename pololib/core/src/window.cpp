@@ -12,7 +12,13 @@ namespace plb
 	}
 
 	void Window::build(WindowSpecs specs)
-	{
+	{	
+		if (!m_PushEventCallback)
+		{
+			Logger& logger = getLogger("window");
+			logger.log(LogLevel::Error, []() { return "Unable to build GLFW window without a pushEventCallback fn"; });
+		}
+
 		m_Width = specs.width;
 		m_Height = specs.height;
 
@@ -23,6 +29,8 @@ namespace plb
 			logger.log(LogLevel::Error, []() { return "Unable to build GLFW window"; });
 			return;
 		}
+
+		glfwMakeContextCurrent(m_Window);
 
 		glfwSetWindowUserPointer(m_Window, this);
 
@@ -37,11 +45,6 @@ namespace plb
 	void Window::setPushEventCallback(std::function<void(std::unique_ptr<Event> e)> fn)
 	{
 		m_PushEventCallback = fn;
-	}
-
-	void Window::makeContextCurrent() const
-	{
-		glfwMakeContextCurrent(m_Window);
 	}
 
 	void Window::swapBuffers() const
@@ -70,8 +73,8 @@ namespace plb
 			return;
 		}
 
-		int deltaWidth = win->m_Width - width;
-		int deltaHeight = win->m_Height - height;
+		int deltaWidth = width - win->m_Width;
+		int deltaHeight = height - win->m_Height;
 
 		win->m_Width = width;
 		win->m_Height = height;
@@ -124,8 +127,8 @@ namespace plb
 		static float xPrev;
 		static float yPrev;
 
-		float deltaX = xPrev - (float)xPos;
-		float deltaY = yPrev - (float)yPos;
+		float deltaX = (float)xPos - xPrev;
+		float deltaY = (float)yPos - yPrev;
 
 		xPrev = xPos;
 		yPrev = yPos;

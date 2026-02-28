@@ -12,7 +12,11 @@ namespace plb
 	{
 		Logger& logger = getLogger("core");
 
-		PLB_ASSERT(glfwInit(), "Unable to init GLFW");
+		if (!glfwInit())
+		{
+			logger.log(LogLevel::Error, []() { return "Unable to init GLFW"; });
+			return;
+		}
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -23,11 +27,10 @@ namespace plb
 #endif
 
 		m_Window.setPushEventCallback([this](std::unique_ptr<Event> e)
-			{
-				m_EventSystem.push(std::move(e));
-			});
+		{
+			m_EventSystem.push(std::move(e));
+		});
 		m_Window.build(specs.windowSpecs);
-		m_Window.makeContextCurrent();
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -35,6 +38,7 @@ namespace plb
 			return;
 		}
 
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		logger.log(LogLevel::Info, []() { return "App init correctly"; });
 	}
 
@@ -49,7 +53,7 @@ namespace plb
 		float pastTime = 0.0f;
 		float deltaTime;
 
-		while (!m_Window.shouldClose());
+		while (!m_Window.shouldClose())
 		{
 			currentTime = glfwGetTime();
 			deltaTime = currentTime - pastTime;
@@ -63,6 +67,7 @@ namespace plb
 			//renderer.render() -> emmit render cmds
 			//m_CommandSystem.commit(); //render cmds
 
+			glClear(GL_COLOR_BUFFER_BIT);
 			m_Window.swapBuffers();
 			m_Window.pollEvents();
 		}

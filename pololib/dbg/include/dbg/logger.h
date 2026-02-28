@@ -8,7 +8,7 @@ namespace plb
 {
 	enum class LogLevel
 	{
-		Debug, Info, Warning, Error // FOR NOW: irrelevant
+		Debug, Info, Warning, Error // PLB_TEMP: irrelevant
 	};
 
 	class Logger
