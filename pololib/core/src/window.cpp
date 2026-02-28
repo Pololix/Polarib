@@ -70,11 +70,13 @@ namespace plb
 			return;
 		}
 
+		int deltaWidth = win->m_Width - width;
+		int deltaHeight = win->m_Height - height;
+
 		win->m_Width = width;
 		win->m_Height = height;
 
-		WindowResizeEvent e;
-		win->m_PushEventCallback(std::make_unique<WindowResizeEvent>(e));
+		win->m_PushEventCallback(std::make_unique<WindowResizeEvent>(deltaWidth, deltaHeight));
 	}
 
 	void Window::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -92,16 +94,17 @@ namespace plb
 		{
 			case GLFW_PRESS:
 			{
-				win->m_PushEventCallback(std::make_unique<KeyPressEvent>());
+				win->m_PushEventCallback(std::make_unique<KeyPressEvent>(key, mods));
 				break;
 			}
 			case GLFW_RELEASE:
 			{
-				win->m_PushEventCallback(std::make_unique<KeyReleaseEvent>());
+				win->m_PushEventCallback(std::make_unique<KeyReleaseEvent>(key));
 				break;
 			}
 			case GLFW_REPEAT:
 			{
+				//win->m_PushEventCallback(std::make_unique<KeyPressEvent>());
 				break;
 			}
 		}
@@ -118,7 +121,17 @@ namespace plb
 			return;
 		}
 
-		win->m_PushEventCallback(std::make_unique<CursorMoveEvent>());
+		static float xPrev;
+		static float yPrev;
+
+		float deltaX = xPrev - (float)xPos;
+		float deltaY = yPrev - (float)yPos;
+
+		xPrev = xPos;
+		yPrev = yPos;
+
+
+		win->m_PushEventCallback(std::make_unique<CursorMoveEvent>(deltaX, deltaY));
 	}
 
 	void Window::cursorEnterCallback(GLFWwindow* window, int entered)
@@ -153,7 +166,14 @@ namespace plb
 			return;
 		}
 
-		win->m_PushEventCallback(std::make_unique<ClickEvent>());
+		if (action == GLFW_PRESS)
+		{
+			win->m_PushEventCallback(std::make_unique<ClickDownEvent>(button, mods));
+		}
+		else
+		{
+			win->m_PushEventCallback(std::make_unique<ClickReleaseEvent>(button));
+		}
 	}
 
 	void Window::scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
@@ -167,6 +187,6 @@ namespace plb
 			return;
 		}
 
-		win->m_PushEventCallback(std::make_unique<ScrollEvent>());
+		win->m_PushEventCallback(std::make_unique<ScrollEvent>((float)xOffset, (float)yOffset));
 	}
 }

@@ -14,5 +14,6 @@
 #include "core/events/cursor_exit_event.h"
 
 // other
-#include "core/events/click_event.h"
+#include "core/events/click_down_event.h"
+#include "core/events/click_release_event.h"
 #include "core/events/scroll_event.h"

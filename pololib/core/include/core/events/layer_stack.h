@@ -6,17 +6,6 @@
 
 namespace plb
 {
-	using LayerID = unsigned int;
-
-	struct LayerWrapper
-	{
-		std::unique_ptr<Layer> layer;
-		LayerID ID = -1;
-
-		LayerWrapper(std::unique_ptr<Layer> layer, LayerID ID)
-			: layer(std::move(layer)), ID(ID) {}
-	};
-
 	class LayerStack
 	{
 	public:
@@ -31,9 +20,8 @@ namespace plb
 
 		void propagateEvent(Event& e) const;
 		void propagateUpdate(float deltaTime) const;
-		void propagateRender() const;
 	private:
-		std::vector<LayerWrapper> m_LayerBuffer;
+		std::vector<std::unique_ptr<Layer>> m_LayerBuffer;
 		unsigned int m_OverlayIndex = 0;
 		LayerID m_FreeID = 0;
 

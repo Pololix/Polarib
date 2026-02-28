@@ -7,7 +7,10 @@ namespace plb
 	class KeyReleaseEvent : public Event
 	{
 	public:
-		KeyReleaseEvent() = default;
+		const int m_Key;
+
+		KeyReleaseEvent(int key) 
+			: m_Key(key) {}
 		~KeyReleaseEvent() = default;
 
 		virtual EventType getType() override { return EventType::KeyReleaseEvent; }

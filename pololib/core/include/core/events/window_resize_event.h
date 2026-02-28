@@ -7,7 +7,11 @@ namespace plb
 	class WindowResizeEvent : public Event
 	{
 	public:
-		WindowResizeEvent() = default;
+		const int m_DeltaWidth;
+		const int m_DeltaHeight;
+
+		WindowResizeEvent(int dWidth, int dHeight) 
+			: m_DeltaWidth(dWidth), m_DeltaHeight(dHeight) {}
 		~WindowResizeEvent() = default;
 
 		virtual EventType getType() override { return EventType::WindowResizeEvent; }

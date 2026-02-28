@@ -8,7 +8,7 @@ namespace plb
 		WindowResizeEvent, WindowCloseEvent,
 		KeyPressEvent, KeyReleaseEvent,
 		CursorMoveEvent, CursorEnterEvent, CursorExitEvent, 
-		ClickEvent, ScrollEvent
+		ClickDownEvent, ClickReleaseEvent, ScrollEvent
 	};
 
 	class Event

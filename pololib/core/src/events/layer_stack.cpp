@@ -41,7 +41,7 @@ namespace plb
 		int pos = getPos(ID);
 		if (pos < 0) return;
 
-		Layer* layer = m_LayerBuffer.at(pos).layer.get();
+		Layer* layer = m_LayerBuffer.at(pos).get();
 		layer->m_Suspended = true;
 		layer->onSuspend();
 	}
@@ -51,41 +51,33 @@ namespace plb
 		int pos = getPos(ID);
 		if (pos < 0) return;
 
-		Layer* layer = m_LayerBuffer.at(pos).layer.get();
+		Layer* layer = m_LayerBuffer.at(pos).get();
 		layer->m_Suspended = false;
 		layer->onInclude();
 	}
 
 	void LayerStack::propagateEvent(Event& e) const
 	{
-		for (auto wrapper = m_LayerBuffer.rbegin(); wrapper != m_LayerBuffer.rend(); wrapper++)
+		for (auto layer = m_LayerBuffer.rbegin(); layer != m_LayerBuffer.rend();layer++)
 		{
-			(*wrapper).layer.get()->onEvent(e);
+			(*layer).get()->onEvent(e);
 			if (e.m_Handled) break;
 		}
 	}
 
 	void LayerStack::propagateUpdate(float deltaTime) const
 	{
-		for (auto wrapper = m_LayerBuffer.rbegin(); wrapper != m_LayerBuffer.rend(); wrapper++)
+		for (auto layer = m_LayerBuffer.rbegin(); layer != m_LayerBuffer.rend(); layer++)
 		{
-			(*wrapper).layer.get()->onUpdate(deltaTime);
-		}
-	}
-
-	void LayerStack::propagateRender() const
-	{
-		for (auto wrapper = m_LayerBuffer.begin(); wrapper != m_LayerBuffer.end(); wrapper++)
-		{
-			(*wrapper).layer.get()->onRender();
+			(*layer).get()->onUpdate(deltaTime);
 		}
 	}
 
 	int LayerStack::getPos(LayerID ID) const
 	{
-		auto target = std::find_if(m_LayerBuffer.begin(), m_LayerBuffer.end(), [ID](const LayerWrapper& wrapper) 
+		auto target = std::find_if(m_LayerBuffer.begin(), m_LayerBuffer.end(), [ID](const Layer& layer) 
 		{ 
-			return wrapper.ID == ID;
+			return layer.m_ID == ID;
 		});
 
 		return (target == m_LayerBuffer.end()) ? -1 : static_cast<int>(std::distance(m_LayerBuffer.begin(), target));
