@@ -63,7 +63,7 @@ namespace plb
 			m_LayerStack.propagateUpdate(deltaTime);
 			//m_CommandSystem.commit(); //logic cmds
 
-			m_LayerStack.propagateRender();
+			//renderer.render() -> emmit render cmds
 			//m_CommandSystem.commit(); //render cmds
 
 			m_Window.swapBuffers();
