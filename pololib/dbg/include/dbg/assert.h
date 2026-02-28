@@ -3,7 +3,7 @@
 #include <iostream> // PLB_TODO: defer logging and assertions avoid including io -> use sink and formatters
 
 #ifdef PLB_BUILD_DEBUG
-	#define DEBUG_ASSERT(cond, msg) do\
+	#define PLB_DEBUG_ASSERT(cond, msg) do\
 		{\
 			if(!(cond))\
 			{\
@@ -15,7 +15,7 @@
 	#define DEBUG_ASSERT(cond, msg) (void)0
 #endif
 
-#define ASSERT(cond, msg) do\
+#define PLB_ASSERT(cond, msg) do\
 		{\
 			if(!(cond))\
 			{\

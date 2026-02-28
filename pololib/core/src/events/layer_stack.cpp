@@ -8,13 +8,15 @@ namespace plb
 {
 	LayerID LayerStack::attachOverlay(std::unique_ptr<Layer> layer)
 	{
-		m_LayerBuffer.emplace_back(std::move(layer), m_FreeID++);
+		layer->m_ID = m_FreeID++;
+		m_LayerBuffer.emplace_back(std::move(layer));
 		return m_FreeID;
 	}
 
 	LayerID LayerStack::attachUnderlay(std::unique_ptr<Layer> layer)
 	{
-		m_LayerBuffer.emplace(m_LayerBuffer.begin() + m_OverlayIndex, std::move(layer), m_FreeID++);
+		layer->m_ID = m_FreeID++;
+		m_LayerBuffer.emplace(m_LayerBuffer.begin() + m_OverlayIndex, std::move(layer));
 		m_OverlayIndex++;
 		return m_FreeID;
 	}
@@ -22,7 +24,7 @@ namespace plb
 	void LayerStack::detachOverlay(LayerID ID)
 	{
 		int pos = getPos(ID);
-		if (pos < 0) return;
+		if (pos == 0) return;
 
 		m_LayerBuffer.erase(m_LayerBuffer.begin() + pos);
 	}
@@ -30,7 +32,7 @@ namespace plb
 	void LayerStack::detachUnderlay(LayerID ID)
 	{
 		int pos = getPos(ID);
-		if (pos < 0) return;
+		if (pos == 0) return;
 
 		m_LayerBuffer.erase(m_LayerBuffer.begin() + pos);
 		m_OverlayIndex--;
@@ -39,7 +41,7 @@ namespace plb
 	void LayerStack::suspendLayer(LayerID ID)
 	{
 		int pos = getPos(ID);
-		if (pos < 0) return;
+		if (pos == 0) return;
 
 		Layer* layer = m_LayerBuffer.at(pos).get();
 		layer->m_Suspended = true;
@@ -49,7 +51,7 @@ namespace plb
 	void LayerStack::includeLayer(LayerID ID)
 	{
 		int pos = getPos(ID);
-		if (pos < 0) return;
+		if (pos == 0) return;
 
 		Layer* layer = m_LayerBuffer.at(pos).get();
 		layer->m_Suspended = false;
@@ -60,7 +62,7 @@ namespace plb
 	{
 		for (auto layer = m_LayerBuffer.rbegin(); layer != m_LayerBuffer.rend();layer++)
 		{
-			(*layer).get()->onEvent(e);
+			(*layer)->onEvent(e);
 			if (e.m_Handled) break;
 		}
 	}
@@ -69,17 +71,17 @@ namespace plb
 	{
 		for (auto layer = m_LayerBuffer.rbegin(); layer != m_LayerBuffer.rend(); layer++)
 		{
-			(*layer).get()->onUpdate(deltaTime);
+			(*layer)->onUpdate(deltaTime);
 		}
 	}
 
-	int LayerStack::getPos(LayerID ID) const
+	unsigned int LayerStack::getPos(LayerID ID) const
 	{
-		auto target = std::find_if(m_LayerBuffer.begin(), m_LayerBuffer.end(), [ID](const Layer& layer) 
+		auto target = std::find_if(m_LayerBuffer.begin(), m_LayerBuffer.end(), [ID](const std::unique_ptr<Layer>& layer) 
 		{ 
-			return layer.m_ID == ID;
+			return layer->m_ID == ID;
 		});
 
-		return (target == m_LayerBuffer.end()) ? -1 : static_cast<int>(std::distance(m_LayerBuffer.begin(), target));
+		return (target == m_LayerBuffer.end()) ? 0 : static_cast<int>(std::distance(m_LayerBuffer.begin(), target));
 	}
 }

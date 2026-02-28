@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "dbg/logger.h"
+#include "dbg/assert.h"
 
 namespace plb
 {
@@ -11,11 +12,7 @@ namespace plb
 	{
 		Logger& logger = getLogger("core");
 
-		if (!glfwInit())
-		{	
-			logger.log(LogLevel::Error, []() { return "Unable to init GLFW"; });
-			return;
-		}
+		PLB_ASSERT(glfwInit(), "Unable to init GLFW");
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);

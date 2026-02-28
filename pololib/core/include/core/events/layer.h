@@ -10,7 +10,7 @@ namespace plb
 	{
 	public:
 		bool m_Suspended = false;
-		LayerID m_ID;
+		LayerID m_ID = 0;
 
 		virtual void onAttach() {}
 		virtual void onSuspend() {}
