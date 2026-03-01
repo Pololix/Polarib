@@ -1,6 +1,6 @@
 # graphics submodule
 add_library(graphics STATIC
-	src/opengl_context.cpp
+	src/opengl/opengl_context.cpp
 )
 
 target_include_directories(graphics
