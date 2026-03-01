@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <memory>
-#include "core/layers/layer.h"
+#include "core/layers/base_layer.h"
 
 namespace plb
 {

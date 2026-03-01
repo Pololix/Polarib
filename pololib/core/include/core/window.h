@@ -2,8 +2,7 @@
 
 #include <memory>
 #include <functional>
-
-struct GLFWwindow;
+#include "core/graphics_context.h"
 
 namespace plb
 {
@@ -20,27 +19,20 @@ namespace plb
 	class Window
 	{
 	public:
-		Window() = default;
-		~Window();
+		virtual ~Window() = 0;
 
-		void setPushEventCallback(std::function<void(std::unique_ptr<Event> e)> fn);
-		void build(WindowSpecs specs);
+		void setEventCallback(std::function<void(std::unique_ptr<Event> e)> fn) { m_PushEvent = fn; }
 
-		void swapBuffers() const;
-		void pollEvents() const;
-		bool shouldClose() const;
-	private:
-		GLFWwindow* m_Window = nullptr;
-		int m_Width = 0;
-		int m_Height = 0;
+		virtual void build(WindowSpecs specs) = 0;
 
-		std::function<void(std::unique_ptr<Event> e)> m_PushEventCallback;
-
-		static void framebufferCallback(GLFWwindow* window, int width, int height);
-		static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-		static void cursorPosCallback(GLFWwindow* window, double xPos, double yPos);
-		static void cursorEnterCallback(GLFWwindow* window, int entered);
-		static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-		static void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
+		virtual void pollEvents() const = 0;
+		virtual void swapBuffers() const = 0;
+		virtual bool shouldClose() const = 0;
+		virtual float getTime() const = 0;
+	protected:
+		std::unique_ptr<GraphicsContext> m_GraphicsContext;
+		std::function<void(std::unique_ptr<Event> e)> m_PushEvent;
+		int m_Width;
+		int m_Height;
 	};
 }

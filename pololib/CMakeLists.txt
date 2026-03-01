@@ -17,11 +17,16 @@ target_compile_definitions(config
 add_subdirectory(core)
 add_subdirectory(dbg)
 add_subdirectory(deps)
+add_subdirectory(platform)
+add_subdirectory(graphics)
 
 # .lib
 add_library(pololib INTERFACE)
+
 target_link_libraries(pololib
 	INTERFACE
 		core
 		dbg
+		platform
+		graphics
 )
