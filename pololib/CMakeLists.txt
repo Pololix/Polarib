@@ -14,12 +14,13 @@ target_compile_definitions(config
 ) 
 
 # submodules
+add_subdirectory(deps)
+
 add_subdirectory(core)
 add_subdirectory(dbg)
-add_subdirectory(platform)
 add_subdirectory(graphics)
+add_subdirectory(platform)
 
-add_subdirectory(deps)
 
 # .lib
 add_library(pololib INTERFACE)

@@ -1,12 +1,14 @@
 # dbg utils
-add_library(dbg INTERFACE)
+add_library(dbg STATIC
+	src/logger.cpp
+)
 
 target_include_directories(dbg
-	INTERFACE	
+	PUBLIC	
 		include
 )
 
 target_link_libraries(dbg
-	INTERFACE
+	PRIVATE
 		config
 )
