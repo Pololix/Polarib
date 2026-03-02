@@ -1,6 +1,6 @@
 # platform submodule
 add_library(platform STATIC
-	src/window_glfw.cpp
+	src/glfw/window_glfw.cpp
 )
 
 target_include_directories(platform
@@ -14,4 +14,5 @@ target_link_libraries(platform
 		glfw
 		dbg
 		config
+		graphics
 )

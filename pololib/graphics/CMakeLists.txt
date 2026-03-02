@@ -11,7 +11,7 @@ target_include_directories(graphics
 find_package(OpenGL REQUIRED)
 
 target_link_libraries(graphics
-	PRIVATE
+	PUBLIC
 		core
 		glad
 		OpenGL::GL
