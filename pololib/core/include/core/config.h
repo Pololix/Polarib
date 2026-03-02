@@ -1,0 +1,4 @@
+#pragma once
+
+#define PLB_SETTINGS_LOGS_ENABLED
+#define PLB_SETTINGS_LOGS_MINLEVEL 0

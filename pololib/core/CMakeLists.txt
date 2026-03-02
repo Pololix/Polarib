@@ -1,7 +1,7 @@
 # core submodule
 add_library(core STATIC
 	src/application.cpp
-)
+ "include/core/config.h")
 
 target_include_directories(core
 	PUBLIC
