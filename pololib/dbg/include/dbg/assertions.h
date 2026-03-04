@@ -6,17 +6,17 @@
 // supported by a logger system
 
 #ifdef PLB_BUILD_DEBUG
-	#define PLB_DEBUG_ASSERT(cond, msg)
+	#define PLB_DEBUG_ASSERT(cond, failMsg)
 #else 
-	#define PLB_DEBUG_ASSERT(cond, msg)
+	#define PLB_DEBUG_ASSERT(cond, failMsg)
 #endif
 
-#define PLB_ASSERT(cond, msg)\
+#define PLB_ASSERT(cond, failMsg)\
 	do\
 	{\
 		if (!(cond))\
 		{\
-			std::cout << (msg) << '\n';\
+			std::cout << (failMsg) << '\n';\
 			std::abort();\
 		}\
 	} while (0)

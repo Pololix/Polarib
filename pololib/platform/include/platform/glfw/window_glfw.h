@@ -21,11 +21,19 @@ namespace plb
 	private:
 		GLFWwindow* m_Window = nullptr;
 
-		static void framebufferCallback	(GLFWwindow* window, int width, int height);
-		static void keyCallback			(GLFWwindow* window, int key, int scancode, int action, int mods);
-		static void cursorPosCallback	(GLFWwindow* window, double xPos, double yPos);
-		static void cursorEnterCallback	(GLFWwindow* window, int entered);
-		static void mouseButtonCallback	(GLFWwindow* window, int button, int action, int mods);
-		static void scrollCallback		(GLFWwindow* window, double xOffset, double yOffset);
+		// window events
+		static void closeCallback			(GLFWwindow* window);
+		static void framebufferSizeCallback	(GLFWwindow* window, int width, int height);
+		
+		// cursor inputs
+		static void cursorEnterCallback		(GLFWwindow* window, int entered);
+		static void cursorPosCallback		(GLFWwindow* window, double xPos, double yPos);
+		static void scrollCallback			(GLFWwindow* window, double xOffset, double yOffset);
+
+		// mouse inputs
+		static void mouseButtonCallback		(GLFWwindow* window, int button, int action, int mods);
+		
+		// key inputs
+		static void keyCallback				(GLFWwindow* window, int key, int scancode, int action, int mods);
 	};
 }

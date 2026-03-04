@@ -1,7 +1,7 @@
 # platform submodule
 add_library(platform STATIC
 	src/glfw/window_glfw.cpp
-)
+ "include/platform/glfw/glfw_config.h")
 
 target_include_directories(platform
 	PUBLIC

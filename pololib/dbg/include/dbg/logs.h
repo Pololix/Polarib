@@ -11,31 +11,31 @@
 
 #ifdef PLB_SETTINGS_LOGS_ENABLED
 	#if PLB_SETTINGS_LOGS_MINLEVEL <= PLB_DEBUG_LOG_LEVEL
-		#define PLB_LOG_DEBUG(msg) std::cout << msg << '\n'
+		#define PLB_LOG_DEBUG(logger, msg) std::cout << msg << '\n'
 	#else 
-		#define PLB_LOG_DEBUG(msg) ((void)0)
+		#define PLB_LOG_DEBUG(logger, msg) ((void)0)
 	#endif
 
 	#if PLB_SETTINGS_LOGS_MINLEVEL <= PLB_INFO_LOG_LEVEL
-		#define PLB_LOG_INFO(msg) std::cout << msg << '\n'
+		#define PLB_LOG_INFO(logger, msg) std::cout << msg << '\n'
 	#else 
-		#define PLB_LOG_INFO(msg) ((void)0)
+		#define PLB_LOG_INFO(logger, msg) ((void)0)
 	#endif
 
 	#if PLB_SETTINGS_LOGS_MINLEVEL <= PLB_WARNING_LOG_LEVEL
-		#define PLB_LOG_WARNING(msg) std::cout << msg << '\n'
+		#define PLB_LOG_WARNING(logger, msg) std::cout << msg << '\n'
 	#else 
-		#define PLB_LOG_WARNING(msg) ((void)0)
+		#define PLB_LOG_WARNING(logger, msg) ((void)0)
 	#endif
 
 	#if PLB_SETTINGS_LOGS_MINLEVEL <= PLB_ERROR_LOG_LEVEL
-		#define PLB_LOG_ERROR(msg) std::cout << msg << '\n'
+		#define PLB_LOG_ERROR(logger, msg) std::cout << msg << '\n'
 	#else 
-		#define PLB_LOG_ERROR(msg) ((void)0)
+		#define PLB_LOG_ERROR(logger, msg) ((void)0)
 	#endif
 #else
-	#define PLB_LOG_DEBUG(msg) ((void)0)
-	#define PLB_LOG_INFO(msg) ((void)0)
-	#define PLB_LOG_WARNING(msg) ((void)0)
-	#define PLB_LOG_ERROR(msg) ((void)0)
+	#define PLB_LOG_DEBUG(logger, msg) ((void)0)
+	#define PLB_LOG_INFO(logger, msg) ((void)0)
+	#define PLB_LOG_WARNING(logger, msg) ((void)0)
+	#define PLB_LOG_ERROR(logger, msg) ((void)0)
 #endif
